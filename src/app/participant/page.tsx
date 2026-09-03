@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Card, Badge } from "@/components/ui";
-import { formatDateTime } from "@/lib/utils";
+import { Card } from "@/components/ui";
 
 export default async function ParticipantHome() {
   const supabase = await createClient();
@@ -11,19 +10,9 @@ export default async function ParticipantHome() {
 
   const { data: profile } = await supabase.from("profiles").select("name, team_id").eq("id", user!.id).single();
 
-  const [{ data: nextEvent }, { data: mySlot }, { data: team }] = await Promise.all([
-    supabase.from("timeline_events").select("*").gte("start_time", new Date().toISOString()).order("start_time").limit(1).maybeSingle(),
-    profile?.team_id
-      ? supabase
-          .from("schedule_slots")
-          .select("*")
-          .eq("team_id", profile.team_id)
-          .order("start_time")
-          .limit(1)
-          .maybeSingle()
-      : Promise.resolve({ data: null }),
-    profile?.team_id ? supabase.from("teams").select("name, project_title").eq("id", profile.team_id).single() : Promise.resolve({ data: null }),
-  ]);
+  const { data: team } = profile?.team_id
+    ? await supabase.from("teams").select("name, project_title").eq("id", profile.team_id).single()
+    : { data: null };
 
   return (
     <div>
@@ -39,42 +28,7 @@ export default async function ParticipantHome() {
         )}
       </p>
 
-      <div className="grid sm:grid-cols-2 gap-4 mb-6">
-        <Card className="p-5">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">Up next on the timeline</p>
-          {nextEvent ? (
-            <>
-              <p className="font-semibold text-slate-900">{nextEvent.title}</p>
-              <p className="text-sm text-slate-500 mt-1">{formatDateTime(nextEvent.start_time)}</p>
-            </>
-          ) : (
-            <p className="text-sm text-slate-400">No upcoming events.</p>
-          )}
-        </Card>
-
-        <Card className="p-5">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">Your presentation slot</p>
-          {mySlot ? (
-            <>
-              <p className="font-semibold text-slate-900">{mySlot.title}</p>
-              <p className="text-sm text-slate-500 mt-1">
-                {formatDateTime(mySlot.start_time)} {mySlot.location ? `· ${mySlot.location}` : ""}
-              </p>
-              <Badge tone="indigo">{mySlot.status.replace("_", " ")}</Badge>
-            </>
-          ) : (
-            <p className="text-sm text-slate-400">Not scheduled yet.</p>
-          )}
-        </Card>
-      </div>
-
-      <div className="grid sm:grid-cols-3 gap-4">
-        <Link href="/participant/timeline">
-          <Card className="p-4 hover:border-indigo-300 transition">
-            <p className="font-medium text-slate-900">📅 Full Timeline</p>
-            <p className="text-xs text-slate-500 mt-1">See the whole event schedule</p>
-          </Card>
-        </Link>
+      <div className="grid sm:grid-cols-2 gap-4">
         <Link href="/participant/rules">
           <Card className="p-4 hover:border-indigo-300 transition">
             <p className="font-medium text-slate-900">📋 Rules</p>

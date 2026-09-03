@@ -6,9 +6,7 @@ import { PushRegister } from "@/components/push-register";
 
 const NAV = [
   { href: "/participant", label: "Home" },
-  { href: "/participant/timeline", label: "Timeline" },
   { href: "/participant/rules", label: "Rules" },
-  { href: "/participant/schedule", label: "My Schedule" },
   { href: "/participant/notifications", label: "Notifications" },
   { href: "/participant/arcade", label: "Arcade" },
 ];
