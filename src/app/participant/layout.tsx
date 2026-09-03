@@ -26,9 +26,6 @@ export default async function ParticipantLayout({ children }: { children: React.
   return (
     <AppShell title="Participant" navItems={NAV} headerExtra={participant && <NotificationBell participantId={participant.id} />}>
       {participant && <PushRegister participantId={participant.id} />}
-      <div className="hidden lg:flex justify-end -mt-4 mb-2">
-        {participant && <NotificationBell participantId={participant.id} />}
-      </div>
       {children}
     </AppShell>
   );

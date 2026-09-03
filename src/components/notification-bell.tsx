@@ -21,7 +21,7 @@ export function NotificationBell({ participantId }: { participantId: string }) {
     load();
     const supabase = createClient();
     const channel = supabase
-      .channel("participant-bell")
+      .channel(`participant-bell-${participantId}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, load)
       .subscribe();
     return () => {

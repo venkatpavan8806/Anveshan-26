@@ -60,9 +60,14 @@ export function AppShell({
       </aside>
 
       <div className="flex-1 min-w-0">
-        <header className="lg:hidden flex items-center justify-end border-b border-slate-200 bg-white px-4 py-2">
+        <header
+          className={cn(
+            "flex items-center justify-end border-b border-slate-200 bg-white px-4 py-2",
+            !headerExtra && "lg:hidden"
+          )}
+        >
           {headerExtra}
-          <form action={signOut}>
+          <form action={signOut} className="lg:hidden">
             <button className="text-sm text-slate-500 hover:text-red-600 transition ml-3">Sign out</button>
           </form>
         </header>
