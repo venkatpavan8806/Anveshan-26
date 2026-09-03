@@ -6,10 +6,17 @@ import { PageHeader, Card, Button, Input, Textarea } from "@/components/ui";
 import { formatDateTime } from "@/lib/utils";
 import type { TimelineEvent } from "@/types/database";
 
+function toLocalInputValue(iso: string) {
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 export default function TimelineAdminPage() {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -57,6 +64,41 @@ export default function TimelineAdminPage() {
     load();
   }
 
+  function startEditing(ev: TimelineEvent) {
+    setEditingId(ev.id);
+    setTitle(ev.title);
+    setDescription(ev.description ?? "");
+    setStart(toLocalInputValue(ev.start_time));
+    setEnd(ev.end_time ? toLocalInputValue(ev.end_time) : "");
+  }
+
+  function cancelEditing() {
+    setEditingId(null);
+    setTitle("");
+    setDescription("");
+    setStart("");
+    setEnd("");
+  }
+
+  async function saveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editingId || !title.trim() || !start) return;
+    setSaving(true);
+    const supabase = createClient();
+    await supabase
+      .from("timeline_events")
+      .update({
+        title: title.trim(),
+        description: description.trim() || null,
+        start_time: new Date(start).toISOString(),
+        end_time: end ? new Date(end).toISOString() : null,
+      })
+      .eq("id", editingId);
+    setSaving(false);
+    cancelEditing();
+    load();
+  }
+
   return (
     <div>
       <PageHeader
@@ -95,21 +137,57 @@ export default function TimelineAdminPage() {
         <p className="text-sm text-slate-400">Loading…</p>
       ) : (
         <div className="space-y-3">
-          {events.map((ev) => (
-            <Card key={ev.id} className="p-4 flex items-start justify-between gap-4">
-              <div>
-                <p className="font-medium text-slate-900">{ev.title}</p>
-                {ev.description && <p className="text-sm text-slate-500 mt-0.5">{ev.description}</p>}
-                <p className="text-xs text-slate-400 mt-1">
-                  {formatDateTime(ev.start_time)}
-                  {ev.end_time ? ` – ${formatDateTime(ev.end_time)}` : ""}
-                </p>
-              </div>
-              <Button variant="ghost" onClick={() => removeEvent(ev.id)}>
-                Delete
-              </Button>
-            </Card>
-          ))}
+          {events.map((ev) =>
+            editingId === ev.id ? (
+              <Card key={ev.id} className="p-4">
+                <form onSubmit={saveEdit} className="grid sm:grid-cols-2 gap-3">
+                  <Input value={title} onChange={(e) => setTitle(e.target.value)} required className="sm:col-span-2" />
+                  <Textarea
+                    placeholder="Description (optional)"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows={2}
+                    className="sm:col-span-2"
+                  />
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1">Start</label>
+                    <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} required />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1">End (optional)</label>
+                    <Input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
+                  </div>
+                  <div className="sm:col-span-2 flex gap-2">
+                    <Button type="submit" disabled={saving}>
+                      {saving ? "Saving…" : "Save"}
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={cancelEditing}>
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              </Card>
+            ) : (
+              <Card key={ev.id} className="p-4 flex items-start justify-between gap-4">
+                <div>
+                  <p className="font-medium text-slate-900">{ev.title}</p>
+                  {ev.description && <p className="text-sm text-slate-500 mt-0.5">{ev.description}</p>}
+                  <p className="text-xs text-slate-400 mt-1">
+                    {formatDateTime(ev.start_time)}
+                    {ev.end_time ? ` – ${formatDateTime(ev.end_time)}` : ""}
+                  </p>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" onClick={() => startEditing(ev)}>
+                    Edit
+                  </Button>
+                  <Button variant="ghost" onClick={() => removeEvent(ev.id)}>
+                    Delete
+                  </Button>
+                </div>
+              </Card>
+            )
+          )}
         </div>
       )}
     </div>
