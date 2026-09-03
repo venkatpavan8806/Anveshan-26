@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# real participant/attendee data pulled from ingested files — never commit PII
+scripts/teams-parsed.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

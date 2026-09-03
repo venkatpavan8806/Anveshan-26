@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { PageHeader, Card, Button, Input, Select, Badge } from "@/components/ui";
 import { qrDataUrl, buildBadgePdf, downloadBytes } from "@/lib/badge";
-import { formatDateTime } from "@/lib/utils";
+import { formatDateTime, statusTone, statusLabel } from "@/lib/utils";
 import type { Participant, Team, MovementLog } from "@/types/database";
 
 export default function ParticipantDetailPage() {
@@ -83,7 +83,7 @@ export default function ParticipantDetailPage() {
       <PageHeader
         title={participant.name}
         description={participant.unique_code}
-        action={<Badge tone={participant.status === "IN" ? "green" : "amber"}>{participant.status}</Badge>}
+        action={<Badge tone={statusTone(participant.status)}>{statusLabel(participant.status)}</Badge>}
       />
 
       <div className="grid lg:grid-cols-3 gap-6">

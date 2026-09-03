@@ -3,7 +3,7 @@
 // file with the generated one — the shapes below match the schema 1:1.
 
 export type Role = "ADMIN" | "VOLUNTEER" | "PARTICIPANT";
-export type ParticipantStatus = "IN" | "OUT";
+export type ParticipantStatus = "PENDING" | "IN" | "OUT";
 export type MovementAction = "CHECK_IN" | "CHECK_OUT";
 export type SlotStatus = "UPCOMING" | "READY_CALL" | "IN_PROGRESS" | "DONE";
 export type NotificationTarget = "ALL" | "TEAM" | "PARTICIPANT";

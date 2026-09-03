@@ -14,8 +14,11 @@ do $$ begin
   create type public.role_t as enum ('ADMIN', 'VOLUNTEER', 'PARTICIPANT');
 exception when duplicate_object then null; end $$;
 
+-- PENDING: registered but hasn't arrived yet (the default for anyone
+-- imported/registered in advance). IN/OUT only apply once a volunteer has
+-- actually scanned them at the gate at least once.
 do $$ begin
-  create type public.participant_status_t as enum ('IN', 'OUT');
+  create type public.participant_status_t as enum ('PENDING', 'IN', 'OUT');
 exception when duplicate_object then null; end $$;
 
 do $$ begin
@@ -67,7 +70,7 @@ create table if not exists public.participants (
   contact text,
   team_id uuid references public.teams (id) on delete set null,
   qr_data text not null, -- payload encoded in the printed QR (== unique_code)
-  status public.participant_status_t not null default 'IN',
+  status public.participant_status_t not null default 'PENDING',
   photo_url text,
   -- links this participant record to their own login (nullable: a
   -- participant can exist before they've ever logged in).

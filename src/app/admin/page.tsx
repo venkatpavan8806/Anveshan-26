@@ -26,7 +26,7 @@ interface LogRow {
 }
 
 export default function AdminDashboard() {
-  const [totals, setTotals] = useState({ total: 0, in: 0, out: 0 });
+  const [totals, setTotals] = useState({ total: 0, in: 0, out: 0, pending: 0 });
   const [outRows, setOutRows] = useState<OutRow[]>([]);
   const [recentLogs, setRecentLogs] = useState<LogRow[]>([]);
   const [now, setNow] = useState(() => Date.now());
@@ -35,18 +35,21 @@ export default function AdminDashboard() {
   const load = useCallback(async () => {
     const supabase = createClient();
 
-    const [{ count: total }, { count: inCount }, { data: out }, { data: logs }] = await Promise.all([
-      supabase.from("participants").select("*", { count: "exact", head: true }),
-      supabase.from("participants").select("*", { count: "exact", head: true }).eq("status", "IN"),
-      supabase.from("v_currently_out").select("*").order("checked_out_at", { ascending: true }),
-      supabase
-        .from("movement_logs")
-        .select("id, action, timestamp, gate_label, participants(name, unique_code)")
-        .order("timestamp", { ascending: false })
-        .limit(20),
-    ]);
+    const [{ count: total }, { count: inCount }, { count: outCount }, { count: pendingCount }, { data: out }, { data: logs }] =
+      await Promise.all([
+        supabase.from("participants").select("*", { count: "exact", head: true }),
+        supabase.from("participants").select("*", { count: "exact", head: true }).eq("status", "IN"),
+        supabase.from("participants").select("*", { count: "exact", head: true }).eq("status", "OUT"),
+        supabase.from("participants").select("*", { count: "exact", head: true }).eq("status", "PENDING"),
+        supabase.from("v_currently_out").select("*").order("checked_out_at", { ascending: true }),
+        supabase
+          .from("movement_logs")
+          .select("id, action, timestamp, gate_label, participants(name, unique_code)")
+          .order("timestamp", { ascending: false })
+          .limit(20),
+      ]);
 
-    setTotals({ total: total ?? 0, in: inCount ?? 0, out: (total ?? 0) - (inCount ?? 0) });
+    setTotals({ total: total ?? 0, in: inCount ?? 0, out: outCount ?? 0, pending: pendingCount ?? 0 });
     setOutRows((out as OutRow[]) ?? []);
     setRecentLogs((logs as unknown as LogRow[]) ?? []);
     setLoading(false);
@@ -83,8 +86,9 @@ export default function AdminDashboard() {
         }
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <Stat label="Total Participants" value={totals.total} />
+        <Stat label="Not Arrived" value={totals.pending} />
         <Stat label="Currently In" value={totals.in} tone="green" />
         <Stat label="Currently Out" value={totals.out} tone={totals.out > 0 ? "amber" : "default"} />
         <Stat label="Out > 60 min" value={overThreshold.length} tone={overThreshold.length > 0 ? "red" : "default"} />
@@ -96,7 +100,7 @@ export default function AdminDashboard() {
           {loading ? (
             <p className="text-sm text-slate-400">Loading…</p>
           ) : outRows.length === 0 ? (
-            <p className="text-sm text-slate-400">Everyone is checked in.</p>
+            <p className="text-sm text-slate-400">Nobody is currently outside.</p>
           ) : (
             <ul className="divide-y divide-slate-100">
               {outRows.map((r) => {

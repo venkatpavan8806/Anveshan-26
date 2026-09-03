@@ -17,6 +17,16 @@ export function formatTime(iso: string) {
   return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
+export function statusTone(status: "PENDING" | "IN" | "OUT"): "default" | "green" | "amber" {
+  if (status === "IN") return "green";
+  if (status === "OUT") return "amber";
+  return "default";
+}
+
+export function statusLabel(status: "PENDING" | "IN" | "OUT") {
+  return status === "PENDING" ? "NOT ARRIVED" : status;
+}
+
 export function formatDateTime(iso: string) {
   return new Date(iso).toLocaleString([], {
     month: "short",

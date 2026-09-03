@@ -5,6 +5,7 @@ import { Html5Qrcode } from "html5-qrcode";
 import { createClient } from "@/lib/supabase/client";
 import { Card, Button, Input, Badge } from "@/components/ui";
 import { playBeep } from "@/lib/beep";
+import { statusTone, statusLabel } from "@/lib/utils";
 import type { Participant } from "@/types/database";
 
 const READER_ID = "qr-reader";
@@ -145,7 +146,7 @@ export default function ScannerPage() {
               <p className="text-xs text-slate-500">
                 {found.unique_code} {found.teams?.name ? `· ${found.teams.name}` : ""}
               </p>
-              <Badge tone={found.status === "IN" ? "green" : "amber"}>{found.status}</Badge>
+              <Badge tone={statusTone(found.status)}>{statusLabel(found.status)}</Badge>
             </div>
           </div>
           <p className="text-sm text-slate-600 mb-3">

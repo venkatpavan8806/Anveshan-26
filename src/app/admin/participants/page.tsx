@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { PageHeader, Card, Button, Input, Select, Badge } from "@/components/ui";
+import { statusTone, statusLabel } from "@/lib/utils";
 import type { Participant, Team } from "@/types/database";
 
 type Row = Participant & { teams: { name: string } | null };
@@ -156,7 +157,7 @@ export default function ParticipantsPage() {
                     <td className="px-4 py-2 font-medium text-slate-900">{p.name}</td>
                     <td className="px-4 py-2 text-slate-600">{p.teams?.name ?? "—"}</td>
                     <td className="px-4 py-2">
-                      <Badge tone={p.status === "IN" ? "green" : "amber"}>{p.status}</Badge>
+                      <Badge tone={statusTone(p.status)}>{statusLabel(p.status)}</Badge>
                     </td>
                     <td className="px-4 py-2 text-right">
                       <Link href={`/admin/participants/${p.id}`} className="text-indigo-600 hover:underline text-sm">
