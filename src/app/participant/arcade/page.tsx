@@ -2,6 +2,11 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Card } from "@/components/ui";
 
+// Always refetch on navigation — otherwise a quick "back to arcade" after
+// finishing a game can show a stale (pre-score) leaderboard from the
+// client-side route cache.
+export const dynamic = "force-dynamic";
+
 const GAMES = [
   { href: "/participant/arcade/trivia", key: "trivia", title: "Trivia Quiz", emoji: "🧠", blurb: "Test your tech knowledge" },
   { href: "/participant/arcade/memory", key: "memory", title: "Memory Match", emoji: "🃏", blurb: "Flip and find the pairs" },

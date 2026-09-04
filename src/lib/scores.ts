@@ -7,10 +7,27 @@ export async function submitScore(game: "trivia" | "memory" | "reaction" | "game
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) {
+    console.warn("submitScore: no logged-in user, score not saved");
+    return;
+  }
 
-  const { data: participant } = await supabase.from("participants").select("id").eq("profile_id", user.id).maybeSingle();
-  if (!participant) return;
+  const { data: participant, error: participantError } = await supabase
+    .from("participants")
+    .select("id")
+    .eq("profile_id", user.id)
+    .maybeSingle();
+  if (participantError) {
+    console.error("submitScore: could not look up participant", participantError.message);
+    return;
+  }
+  if (!participant) {
+    console.warn("submitScore: no participant record linked to this account, score not saved");
+    return;
+  }
 
-  await supabase.from("game_scores").insert({ participant_id: participant.id, game, score });
+  const { error: insertError } = await supabase.from("game_scores").insert({ participant_id: participant.id, game, score });
+  if (insertError) {
+    console.error("submitScore: insert failed", insertError.message);
+  }
 }
