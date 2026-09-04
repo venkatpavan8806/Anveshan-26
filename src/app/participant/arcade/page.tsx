@@ -7,6 +7,7 @@ const GAMES = [
   { href: "/participant/arcade/memory", key: "memory", title: "Memory Match", emoji: "🃏", blurb: "Flip and find the pairs" },
   { href: "/participant/arcade/reaction", key: "reaction", title: "Reaction Time", emoji: "⚡", blurb: "How fast are your reflexes?" },
   { href: "/participant/arcade/2048", key: "game2048", title: "2048", emoji: "🔢", blurb: "Merge tiles to reach 2048" },
+  { href: "/participant/arcade/flappy", key: "flappy", title: "Flappy Bird", emoji: "🐦", blurb: "Flap through the pipes" },
 ];
 
 export default async function ArcadePage() {
@@ -18,7 +19,7 @@ export default async function ArcadePage() {
       <h1 className="text-2xl font-bold text-white mb-1">Arcade</h1>
       <p className="text-slate-400 text-sm mb-6">Waiting between sessions? Play a quick game.</p>
 
-      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {GAMES.map((g) => (
           <Link key={g.key} href={g.href}>
             <Card className="p-5 hover:border-sky-500/40 transition h-full">
@@ -31,7 +32,7 @@ export default async function ArcadePage() {
       </div>
 
       <h2 className="font-semibold text-white mb-3">Leaderboards</h2>
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {GAMES.map((g) => {
           const top = (scores ?? [])
             .filter((s) => s.game === g.key)

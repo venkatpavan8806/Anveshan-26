@@ -103,7 +103,7 @@ export type PushSubscriptionRow = {
 export type GameScore = {
   id: string;
   participant_id: string;
-  game: "trivia" | "memory" | "reaction" | "game2048";
+  game: "trivia" | "memory" | "reaction" | "game2048" | "flappy";
   score: number;
   created_at: string;
 }

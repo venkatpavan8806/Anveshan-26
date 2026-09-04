@@ -144,7 +144,7 @@ create table if not exists public.push_subscriptions (
 create table if not exists public.game_scores (
   id uuid primary key default gen_random_uuid(),
   participant_id uuid not null references public.participants (id) on delete cascade,
-  game text not null check (game in ('trivia', 'memory', 'reaction', 'game2048')),
+  game text not null check (game in ('trivia', 'memory', 'reaction', 'game2048', 'flappy')),
   score int not null,
   created_at timestamptz not null default now()
 );

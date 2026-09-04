@@ -13,7 +13,6 @@ export default function ProfilePage() {
   const [contact, setContact] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -51,26 +50,6 @@ export default function ProfilePage() {
     load();
   }
 
-  async function uploadPhoto(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file || !participant) return;
-    setUploading(true);
-    setStatus(null);
-    const supabase = createClient();
-    const path = `photos/${participant.id}-${Date.now()}.${file.name.split(".").pop()}`;
-    const { error: uploadError } = await supabase.storage.from("anveshan").upload(path, file, { upsert: true });
-    if (uploadError) {
-      setStatus(uploadError.message);
-      setUploading(false);
-      return;
-    }
-    const { data } = supabase.storage.from("anveshan").getPublicUrl(path);
-    const { error: rpcError } = await supabase.rpc("update_my_profile", { p_photo_url: data.publicUrl });
-    setStatus(rpcError ? rpcError.message : "Photo updated.");
-    setUploading(false);
-    load();
-  }
-
   if (loading) return <p className="text-sm text-slate-500">Loading…</p>;
 
   if (!participant) {
@@ -90,17 +69,6 @@ export default function ProfilePage() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <Card className="p-5 flex flex-col items-center text-center">
-          {participant.photo_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={participant.photo_url} alt={participant.name} className="w-24 h-24 rounded-full object-cover mb-3" />
-          ) : (
-            <div className="w-24 h-24 rounded-full bg-slate-800 mb-3" />
-          )}
-          <label className="text-xs text-sky-400 hover:underline cursor-pointer mb-4">
-            {uploading ? "Uploading…" : "Change photo"}
-            <input type="file" accept="image/*" className="hidden" onChange={uploadPhoto} disabled={uploading} />
-          </label>
-
           {qr && <img src={qr} alt="QR code" className="w-40 h-40 rounded-lg bg-white p-2" />}
           <p className="font-mono text-lg font-bold text-white mt-4 tracking-wide">{participant.unique_code}</p>
           <p className="text-xs text-slate-500 mt-1">Your gate ID</p>

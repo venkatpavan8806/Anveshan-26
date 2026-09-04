@@ -67,7 +67,7 @@ export default function ArcadeAdminPage() {
     load();
   }
 
-  const bestPerGame = ["trivia", "memory", "reaction", "game2048"].map((game) => ({
+  const bestPerGame = ["trivia", "memory", "reaction", "game2048", "flappy"].map((game) => ({
     game,
     top: scores.filter((s) => s.game === game).slice(0, 5),
   }));
@@ -126,7 +126,7 @@ export default function ArcadeAdminPage() {
       )}
 
       <h2 className="font-semibold text-white mb-3">Leaderboards</h2>
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {bestPerGame.map(({ game, top }) => (
           <Card key={game} className="p-4">
             <p className="text-sm font-semibold text-white capitalize mb-2">{game}</p>

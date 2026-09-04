@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 
-export async function submitScore(game: "trivia" | "memory" | "reaction" | "game2048", score: number) {
+export async function submitScore(game: "trivia" | "memory" | "reaction" | "game2048" | "flappy", score: number) {
   const supabase = createClient();
   const {
     data: { user },

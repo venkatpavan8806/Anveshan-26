@@ -21,6 +21,7 @@ export default function ParticipantsPage() {
   const [teamId, setTeamId] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -70,6 +71,23 @@ export default function ParticipantsPage() {
     setShowForm(false);
     setSaving(false);
     load();
+  }
+
+  async function toggleBreak(participantId: string) {
+    setTogglingId(participantId);
+    const supabase = createClient();
+    await supabase.rpc("toggle_participant_status", {
+      p_participant_id: participantId,
+      p_gate_label: "Admin Panel",
+    });
+    setTogglingId(null);
+    load();
+  }
+
+  function breakButtonLabel(status: Row["status"]) {
+    if (status === "IN") return "Mark on break";
+    if (status === "OUT") return "Mark back";
+    return "Check in";
   }
 
   const filtered = rows.filter((r) => {
@@ -160,9 +178,19 @@ export default function ParticipantsPage() {
                       <Badge tone={statusTone(p.status)}>{statusLabel(p.status)}</Badge>
                     </td>
                     <td className="px-4 py-2 text-right">
-                      <Link href={`/admin/participants/${p.id}`} className="text-sky-400 hover:underline text-sm">
-                        View / Badge
-                      </Link>
+                      <div className="flex items-center justify-end gap-3">
+                        <Button
+                          variant="secondary"
+                          className="py-1 px-2.5 text-xs"
+                          disabled={togglingId === p.id}
+                          onClick={() => toggleBreak(p.id)}
+                        >
+                          {togglingId === p.id ? "…" : breakButtonLabel(p.status)}
+                        </Button>
+                        <Link href={`/admin/participants/${p.id}`} className="text-sky-400 hover:underline text-sm">
+                          View / Badge
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}
