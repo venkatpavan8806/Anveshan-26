@@ -153,7 +153,7 @@ It's additive (re-running re-imports/duplicates rows), so review the console
 output — if something looks wrong, fix the source file and re-run, or clean up
 duplicates from the admin UI.
 
-## 7. Vercel Cron for schedule-based auto-notifications
+## 7. Auto-notifications for the schedule (GitHub Actions cron)
 
 [`src/app/api/cron/notify/route.ts`](src/app/api/cron/notify/route.ts) checks
 `schedule_slots` and fires two auto-notifications per slot, each gated by the
@@ -164,26 +164,27 @@ slot's own status so it only ever fires once:
 - `READY_CALL → IN_PROGRESS`: once the start time has passed, notify again
   ("you're up") and flip its status.
 
-[`vercel.json`](vercel.json) schedules this to run every 5 minutes:
+**Why GitHub Actions and not Vercel Cron:** Vercel's free Hobby plan only allows
+cron jobs to run once a day, which is useless for same-day alerts — every-5-minutes
+schedules need a paid Pro plan. [`.github/workflows/notify-cron.yml`](.github/workflows/notify-cron.yml)
+does the same job for free by pinging the endpoint every 5 minutes from GitHub's
+own scheduler (`vercel.json` intentionally has no `crons` key, so Vercel won't
+complain during deploy).
 
-```json
-{ "crons": [{ "path": "/api/cron/notify", "schedule": "*/5 * * * *" }] }
-```
+One-time setup — in this repo on GitHub, go to **Settings → Secrets and variables
+→ Actions** and add two repository secrets:
 
-**Important — Vercel plan limits:** frequent cron schedules (like every 5 minutes)
-require a **Pro** plan. On the free **Hobby** plan, Vercel Cron is limited to
-once a day, which is useless for a same-day hackathon schedule. If you're on
-Hobby, either upgrade for the event, or point a free external scheduler (e.g.
-[cron-job.org](https://cron-job.org) or GitHub Actions on a schedule) at
-`https://your-app.vercel.app/api/cron/notify` every few minutes instead — just
-make sure it sends the header below.
+- `APP_URL` — your deployed URL, e.g. `https://your-app.vercel.app` (no trailing slash)
+- `CRON_SECRET` — the same value as `CRON_SECRET` in your `.env.local` / Vercel env vars
 
-Either way, the endpoint is protected by a shared secret so randoms can't spam
-notifications: it checks `Authorization: Bearer <CRON_SECRET>`. Vercel's own
-Cron automatically sends this header using your `CRON_SECRET` env var — you
-just need `CRON_SECRET` set in **Vercel → Project → Settings → Environment
-Variables** (same value as your `.env.local`). If you use an external
-scheduler instead, configure it to send that same header manually.
+That's it — the workflow starts running automatically once those secrets exist
+(GitHub only runs scheduled workflows on the repo's default branch). You can also
+trigger it manually from the **Actions** tab (**Anveshan schedule notifications** →
+**Run workflow**) to test it immediately rather than waiting up to 5 minutes.
+
+The endpoint itself is protected by that same shared secret regardless of what
+calls it — it checks `Authorization: Bearer <CRON_SECRET>`, so nobody else can
+trigger notification spam even if they find the URL.
 
 Admins can also always trigger a notification manually (no cron needed) from
 **Admin → Notifications**.
