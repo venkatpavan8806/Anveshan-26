@@ -82,7 +82,7 @@ export default function SchedulePage() {
         <Card className="p-4 mb-6">
           <form onSubmit={addSlot} className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Team</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Team</label>
               <Select value={teamId} onChange={(e) => setTeamId(e.target.value)} required>
                 <option value="">Select team</option>
                 {teams.map((t) => (
@@ -93,19 +93,19 @@ export default function SchedulePage() {
               </Select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Title</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Title</label>
               <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Start</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Start</label>
               <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} required />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">End</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">End</label>
               <Input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} required />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Location / Stage</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Location / Stage</label>
               <Input value={location} onChange={(e) => setLocation(e.target.value)} />
             </div>
             <div className="lg:col-span-5">
@@ -119,13 +119,13 @@ export default function SchedulePage() {
 
       <Card className="overflow-hidden">
         {loading ? (
-          <p className="p-4 text-sm text-slate-400">Loading…</p>
+          <p className="p-4 text-sm text-slate-500">Loading…</p>
         ) : rows.length === 0 ? (
-          <p className="p-4 text-sm text-slate-400">No slots scheduled yet.</p>
+          <p className="p-4 text-sm text-slate-500">No slots scheduled yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs text-slate-500 uppercase">
+              <thead className="bg-slate-900 text-left text-xs text-slate-400 uppercase">
                 <tr>
                   <th className="px-4 py-2">Team</th>
                   <th className="px-4 py-2">Title</th>
@@ -135,15 +135,15 @@ export default function SchedulePage() {
                   <th className="px-4 py-2"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-800">
                 {rows.map((r) => (
                   <tr key={r.id}>
-                    <td className="px-4 py-2 font-medium text-slate-900">{r.teams?.name ?? "—"}</td>
+                    <td className="px-4 py-2 font-medium text-white">{r.teams?.name ?? "—"}</td>
                     <td className="px-4 py-2">{r.title}</td>
-                    <td className="px-4 py-2 text-slate-500">
+                    <td className="px-4 py-2 text-slate-400">
                       {formatDateTime(r.start_time)} – {formatDateTime(r.end_time)}
                     </td>
-                    <td className="px-4 py-2 text-slate-500">{r.location ?? "—"}</td>
+                    <td className="px-4 py-2 text-slate-400">{r.location ?? "—"}</td>
                     <td className="px-4 py-2">
                       <Select
                         value={r.status}

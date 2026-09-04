@@ -63,7 +63,7 @@ export default function ReactionGamePage() {
 
   const avg = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : null;
 
-  const bg = { idle: "bg-indigo-600", waiting: "bg-amber-500", ready: "bg-emerald-500", tooSoon: "bg-red-500", result: "bg-indigo-600", done: "bg-indigo-600" }[phase];
+  const bg = { idle: "bg-sky-500", waiting: "bg-amber-500", ready: "bg-emerald-500", tooSoon: "bg-red-500", result: "bg-sky-500", done: "bg-sky-500" }[phase];
 
   const label = {
     idle: "Click to start",
@@ -76,8 +76,8 @@ export default function ReactionGamePage() {
 
   return (
     <div className="max-w-md mx-auto">
-      <h1 className="text-xl font-bold text-slate-900 mb-3">Reaction Time</h1>
-      <p className="text-sm text-slate-500 mb-4">Click as soon as the box turns green. {ROUNDS} rounds.</p>
+      <h1 className="text-xl font-bold text-white mb-3">Reaction Time</h1>
+      <p className="text-sm text-slate-400 mb-4">Click as soon as the box turns green. {ROUNDS} rounds.</p>
 
       {phase !== "done" ? (
         <button
@@ -88,8 +88,8 @@ export default function ReactionGamePage() {
         </button>
       ) : (
         <Card className="p-6 text-center">
-          <p className="font-semibold text-slate-900">Average: {avg}ms 🎉</p>
-          <p className="text-xs text-slate-500 mt-1">{times.join("ms, ")}ms</p>
+          <p className="font-semibold text-white">Average: {avg}ms 🎉</p>
+          <p className="text-xs text-slate-400 mt-1">{times.join("ms, ")}ms</p>
           <div className="flex gap-2 justify-center mt-4">
             <Button onClick={() => setPhase("idle")}>Play again</Button>
             <Link href="/participant/arcade">
@@ -100,7 +100,7 @@ export default function ReactionGamePage() {
       )}
 
       {phase !== "idle" && phase !== "done" && (
-        <p className="text-center text-xs text-slate-400 mt-3">
+        <p className="text-center text-xs text-slate-500 mt-3">
           Round {times.length + 1} / {ROUNDS}
         </p>
       )}

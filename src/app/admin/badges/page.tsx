@@ -68,11 +68,11 @@ export default function BadgesPage() {
 
       <Card className="overflow-hidden">
         {loading ? (
-          <p className="p-4 text-sm text-slate-400">Loading…</p>
+          <p className="p-4 text-sm text-slate-500">Loading…</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs text-slate-500 uppercase">
+              <thead className="bg-slate-900 text-left text-xs text-slate-400 uppercase">
                 <tr>
                   <th className="px-4 py-2 w-10"></th>
                   <th className="px-4 py-2">Code</th>
@@ -80,15 +80,15 @@ export default function BadgesPage() {
                   <th className="px-4 py-2">Team</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-800">
                 {rows.map((r) => (
-                  <tr key={r.id} className="cursor-pointer hover:bg-slate-50" onClick={() => toggle(r.id)}>
+                  <tr key={r.id} className="cursor-pointer hover:bg-slate-800" onClick={() => toggle(r.id)}>
                     <td className="px-4 py-2">
                       <input type="checkbox" checked={selected.has(r.id)} onChange={() => toggle(r.id)} />
                     </td>
                     <td className="px-4 py-2 font-mono text-xs">{r.unique_code}</td>
-                    <td className="px-4 py-2 font-medium text-slate-900">{r.name}</td>
-                    <td className="px-4 py-2 text-slate-500">{r.teams?.name ?? "—"}</td>
+                    <td className="px-4 py-2 font-medium text-white">{r.name}</td>
+                    <td className="px-4 py-2 text-slate-400">{r.teams?.name ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>

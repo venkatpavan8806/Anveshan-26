@@ -26,11 +26,11 @@ export function AppShell({
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
-      <aside className="lg:w-60 shrink-0 border-b lg:border-b-0 lg:border-r border-slate-200 bg-white">
+      <aside className="lg:w-60 shrink-0 border-b lg:border-b-0 lg:border-r border-slate-800 bg-slate-900">
         <div className="p-4 flex items-center justify-between lg:block">
           <div>
-            <p className="text-lg font-bold text-indigo-600">Anveshan</p>
-            <p className="text-xs text-slate-500">{title}</p>
+            <p className="text-lg font-bold text-sky-400">Anveshan</p>
+            <p className="text-xs text-slate-400">{title}</p>
           </div>
         </div>
         <nav className="flex lg:flex-col gap-1 px-2 pb-2 lg:pb-4 overflow-x-auto">
@@ -43,8 +43,8 @@ export function AppShell({
                 className={cn(
                   "shrink-0 rounded-lg px-3 py-2 text-sm font-medium transition whitespace-nowrap",
                   active
-                    ? "bg-indigo-50 text-indigo-700"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-sky-500/10 text-sky-300"
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
                 )}
               >
                 {item.label}
@@ -54,7 +54,7 @@ export function AppShell({
         </nav>
         <div className="hidden lg:block px-4 pb-4 mt-auto">
           <form action={signOut}>
-            <button className="text-sm text-slate-500 hover:text-red-600 transition">Sign out</button>
+            <button className="text-sm text-slate-400 hover:text-red-400 transition">Sign out</button>
           </form>
         </div>
       </aside>
@@ -62,13 +62,13 @@ export function AppShell({
       <div className="flex-1 min-w-0">
         <header
           className={cn(
-            "flex items-center justify-end border-b border-slate-200 bg-white px-4 py-2",
+            "flex items-center justify-end border-b border-slate-800 bg-slate-900 px-4 py-2",
             !headerExtra && "lg:hidden"
           )}
         >
           {headerExtra}
           <form action={signOut} className="lg:hidden">
-            <button className="text-sm text-slate-500 hover:text-red-600 transition ml-3">Sign out</button>
+            <button className="text-sm text-slate-400 hover:text-red-400 transition ml-3">Sign out</button>
           </form>
         </header>
         <main className="p-4 lg:p-8 max-w-6xl mx-auto">{children}</main>

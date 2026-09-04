@@ -76,7 +76,7 @@ export default function ArcadeAdminPage() {
     <div>
       <PageHeader title="Arcade" description="Trivia questions and mini-game leaderboards." />
 
-      <h2 className="font-semibold text-slate-900 mb-3">Trivia questions</h2>
+      <h2 className="font-semibold text-white mb-3">Trivia questions</h2>
       <Card className="p-4 mb-4">
         <form onSubmit={addQuestion} className="space-y-3">
           <Input placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)} required />
@@ -106,14 +106,14 @@ export default function ArcadeAdminPage() {
       </Card>
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-500">Loading…</p>
       ) : (
         <div className="space-y-2 mb-8">
           {questions.map((q) => (
             <Card key={q.id} className="p-3 flex items-start justify-between gap-3">
               <div>
-                <p className="text-sm font-medium text-slate-900">{q.question}</p>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-sm font-medium text-white">{q.question}</p>
+                <p className="text-xs text-slate-400 mt-1">
                   Correct: <span className="font-medium">{q.options[q.correct_index]}</span>
                 </p>
               </div>
@@ -125,13 +125,13 @@ export default function ArcadeAdminPage() {
         </div>
       )}
 
-      <h2 className="font-semibold text-slate-900 mb-3">Leaderboards</h2>
+      <h2 className="font-semibold text-white mb-3">Leaderboards</h2>
       <div className="grid sm:grid-cols-2 gap-4">
         {bestPerGame.map(({ game, top }) => (
           <Card key={game} className="p-4">
-            <p className="text-sm font-semibold text-slate-900 capitalize mb-2">{game}</p>
+            <p className="text-sm font-semibold text-white capitalize mb-2">{game}</p>
             {top.length === 0 ? (
-              <p className="text-xs text-slate-400">No scores yet.</p>
+              <p className="text-xs text-slate-500">No scores yet.</p>
             ) : (
               <ol className="text-sm space-y-1">
                 {top.map((s, i) => (

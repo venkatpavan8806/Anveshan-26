@@ -73,8 +73,8 @@ export default function MemoryGamePage() {
   return (
     <div className="max-w-md mx-auto">
       <div className="flex justify-between items-center mb-3">
-        <h1 className="text-xl font-bold text-slate-900">Memory Match</h1>
-        <span className="text-sm text-slate-500">Moves: {moves}</span>
+        <h1 className="text-xl font-bold text-white">Memory Match</h1>
+        <span className="text-sm text-slate-400">Moves: {moves}</span>
       </div>
 
       <div className="grid grid-cols-4 gap-2">
@@ -83,7 +83,7 @@ export default function MemoryGamePage() {
             key={c.key}
             onClick={() => flip(i)}
             className={`aspect-square rounded-lg text-2xl flex items-center justify-center transition ${
-              c.flipped || c.matched ? "bg-indigo-50 border-2 border-indigo-300" : "bg-slate-100 hover:bg-slate-200 border-2 border-transparent"
+              c.flipped || c.matched ? "bg-sky-500/10 border-2 border-sky-500/40" : "bg-slate-800 hover:bg-slate-700 border-2 border-transparent"
             }`}
           >
             {c.flipped || c.matched ? c.emoji : ""}
@@ -93,7 +93,7 @@ export default function MemoryGamePage() {
 
       {allMatched && (
         <Card className="p-5 mt-4 text-center">
-          <p className="font-semibold text-slate-900">Solved in {moves} moves! 🎉</p>
+          <p className="font-semibold text-white">Solved in {moves} moves! 🎉</p>
           <div className="flex gap-2 justify-center mt-3">
             <Button onClick={reset}>Play again</Button>
             <Link href="/participant/arcade">

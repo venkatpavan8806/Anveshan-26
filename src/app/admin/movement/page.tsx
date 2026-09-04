@@ -90,13 +90,13 @@ export default function MovementLogPage() {
 
       <Card className="overflow-hidden">
         {loading ? (
-          <p className="p-4 text-sm text-slate-400">Loading…</p>
+          <p className="p-4 text-sm text-slate-500">Loading…</p>
         ) : filtered.length === 0 ? (
-          <p className="p-4 text-sm text-slate-400">No entries match.</p>
+          <p className="p-4 text-sm text-slate-500">No entries match.</p>
         ) : (
           <div className="overflow-x-auto max-h-[70vh]">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs text-slate-500 uppercase sticky top-0">
+              <thead className="bg-slate-900 text-left text-xs text-slate-400 uppercase sticky top-0">
                 <tr>
                   <th className="px-4 py-2">Participant</th>
                   <th className="px-4 py-2">Action</th>
@@ -105,21 +105,21 @@ export default function MovementLogPage() {
                   <th className="px-4 py-2">Time</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-800">
                 {filtered.map((r) => (
                   <tr key={r.id}>
                     <td className="px-4 py-2">
-                      <p className="font-medium text-slate-900">{r.participants?.name ?? "—"}</p>
-                      <p className="text-xs text-slate-400 font-mono">{r.participants?.unique_code}</p>
+                      <p className="font-medium text-white">{r.participants?.name ?? "—"}</p>
+                      <p className="text-xs text-slate-500 font-mono">{r.participants?.unique_code}</p>
                     </td>
                     <td className="px-4 py-2">
                       <Badge tone={r.action === "CHECK_IN" ? "green" : "amber"}>
                         {r.action === "CHECK_IN" ? "IN" : "OUT"}
                       </Badge>
                     </td>
-                    <td className="px-4 py-2 text-slate-500">{r.gate_label ?? "—"}</td>
-                    <td className="px-4 py-2 text-slate-500">{r.scanner?.name ?? "—"}</td>
-                    <td className="px-4 py-2 text-slate-500">{formatDateTime(r.timestamp)}</td>
+                    <td className="px-4 py-2 text-slate-400">{r.gate_label ?? "—"}</td>
+                    <td className="px-4 py-2 text-slate-400">{r.scanner?.name ?? "—"}</td>
+                    <td className="px-4 py-2 text-slate-400">{formatDateTime(r.timestamp)}</td>
                   </tr>
                 ))}
               </tbody>

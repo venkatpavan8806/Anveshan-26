@@ -110,29 +110,29 @@ export default function NotificationsAdminPage() {
           <Button type="submit" disabled={sending}>
             {sending ? "Sending…" : "Send notification"}
           </Button>
-          {status && <p className="text-sm text-slate-600">{status}</p>}
+          {status && <p className="text-sm text-slate-300">{status}</p>}
         </form>
       </Card>
 
-      <h2 className="font-semibold text-slate-900 mb-3">Sent notifications</h2>
+      <h2 className="font-semibold text-white mb-3">Sent notifications</h2>
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-500">Loading…</p>
       ) : sent.length === 0 ? (
-        <p className="text-sm text-slate-400">Nothing sent yet.</p>
+        <p className="text-sm text-slate-500">Nothing sent yet.</p>
       ) : (
         <div className="space-y-3">
           {sent.map((n) => (
             <Card key={n.id} className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="font-medium text-slate-900">{n.title}</p>
-                  <p className="text-sm text-slate-500 mt-0.5">{n.body}</p>
+                  <p className="font-medium text-white">{n.title}</p>
+                  <p className="text-sm text-slate-400 mt-0.5">{n.body}</p>
                 </div>
                 <Badge tone={n.type === "PRESENTATION_TIME" ? "indigo" : n.type === "READY_CALL" ? "amber" : "default"}>
                   {n.type.replace("_", " ")}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400 mt-2">
+              <p className="text-xs text-slate-500 mt-2">
                 {n.target} · {formatDateTime(n.sent_at)}
               </p>
             </Card>

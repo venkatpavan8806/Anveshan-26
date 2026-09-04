@@ -16,8 +16,8 @@ export default async function ParticipantHome() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-slate-900 mb-1">Hi {profile?.name?.split(" ")[0] ?? "there"} 👋</h1>
-      <p className="text-slate-500 mb-6">
+      <h1 className="text-2xl font-bold text-white mb-1">Hi {profile?.name?.split(" ")[0] ?? "there"} 👋</h1>
+      <p className="text-slate-400 mb-6">
         {team ? (
           <>
             {team.name}
@@ -30,15 +30,15 @@ export default async function ParticipantHome() {
 
       <div className="grid sm:grid-cols-2 gap-4">
         <Link href="/participant/rules">
-          <Card className="p-4 hover:border-indigo-300 transition">
-            <p className="font-medium text-slate-900">📋 Rules</p>
-            <p className="text-xs text-slate-500 mt-1">Guidelines & code of conduct</p>
+          <Card className="p-4 hover:border-sky-500/40 transition">
+            <p className="font-medium text-white">📋 Rules</p>
+            <p className="text-xs text-slate-400 mt-1">Guidelines & code of conduct</p>
           </Card>
         </Link>
         <Link href="/participant/arcade">
-          <Card className="p-4 hover:border-indigo-300 transition">
-            <p className="font-medium text-slate-900">🎮 Arcade</p>
-            <p className="text-xs text-slate-500 mt-1">Kill time between sessions</p>
+          <Card className="p-4 hover:border-sky-500/40 transition">
+            <p className="font-medium text-white">🎮 Arcade</p>
+            <p className="text-xs text-slate-400 mt-1">Kill time between sessions</p>
           </Card>
         </Link>
       </div>

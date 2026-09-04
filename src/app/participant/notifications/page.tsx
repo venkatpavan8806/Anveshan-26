@@ -49,27 +49,27 @@ export default function ParticipantNotificationsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-slate-900 mb-1">Notifications</h1>
-      <p className="text-slate-500 text-sm mb-6">Announcements sent to you, your team, or everyone.</p>
+      <h1 className="text-2xl font-bold text-white mb-1">Notifications</h1>
+      <p className="text-slate-400 text-sm mb-6">Announcements sent to you, your team, or everyone.</p>
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-500">Loading…</p>
       ) : notifications.length === 0 ? (
-        <Card className="p-6 text-center text-sm text-slate-400">No notifications yet.</Card>
+        <Card className="p-6 text-center text-sm text-slate-500">No notifications yet.</Card>
       ) : (
         <div className="space-y-3">
           {notifications.map((n) => (
-            <Card key={n.id} className={`p-4 ${!readIds.has(n.id) ? "border-indigo-300 bg-indigo-50/40" : ""}`}>
+            <Card key={n.id} className={`p-4 ${!readIds.has(n.id) ? "border-sky-500/40 bg-sky-500/10/40" : ""}`}>
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="font-medium text-slate-900">{n.title}</p>
-                  <p className="text-sm text-slate-600 mt-0.5">{n.body}</p>
+                  <p className="font-medium text-white">{n.title}</p>
+                  <p className="text-sm text-slate-300 mt-0.5">{n.body}</p>
                 </div>
                 <Badge tone={n.type === "PRESENTATION_TIME" ? "indigo" : n.type === "READY_CALL" ? "amber" : "default"}>
                   {n.type.replace("_", " ")}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400 mt-2">{formatDateTime(n.sent_at)}</p>
+              <p className="text-xs text-slate-500 mt-2">{formatDateTime(n.sent_at)}</p>
             </Card>
           ))}
         </div>

@@ -56,19 +56,19 @@ export default function VolunteersPage() {
       <Card className="p-4 mb-6">
         <form onSubmit={createStaff} className="grid sm:grid-cols-4 gap-3 items-end">
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Name</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Name</label>
             <Input value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Email</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Email</label>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Password</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Password</label>
             <Input type="password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Role</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Role</label>
             <Select value={role} onChange={(e) => setRole(e.target.value as "VOLUNTEER" | "ADMIN")}>
               <option value="VOLUNTEER">Volunteer</option>
               <option value="ADMIN">Admin</option>
@@ -78,26 +78,26 @@ export default function VolunteersPage() {
             <Button type="submit" disabled={saving}>
               {saving ? "Creating…" : "Create account"}
             </Button>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-red-400">{error}</p>}
           </div>
         </form>
       </Card>
 
       <Card className="overflow-hidden">
         {loading ? (
-          <p className="p-4 text-sm text-slate-400">Loading…</p>
+          <p className="p-4 text-sm text-slate-500">Loading…</p>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs text-slate-500 uppercase">
+            <thead className="bg-slate-900 text-left text-xs text-slate-400 uppercase">
               <tr>
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Role</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800">
               {staff.map((s) => (
                 <tr key={s.id}>
-                  <td className="px-4 py-2 font-medium text-slate-900">{s.name}</td>
+                  <td className="px-4 py-2 font-medium text-white">{s.name}</td>
                   <td className="px-4 py-2">
                     <Badge tone={s.role === "ADMIN" ? "indigo" : "default"}>{s.role}</Badge>
                   </td>

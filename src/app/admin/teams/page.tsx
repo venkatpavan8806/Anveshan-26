@@ -73,22 +73,22 @@ export default function TeamsPage() {
 
       <Card className="overflow-hidden">
         {loading ? (
-          <p className="p-4 text-sm text-slate-400">Loading…</p>
+          <p className="p-4 text-sm text-slate-500">Loading…</p>
         ) : teams.length === 0 ? (
-          <p className="p-4 text-sm text-slate-400">No teams yet.</p>
+          <p className="p-4 text-sm text-slate-500">No teams yet.</p>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs text-slate-500 uppercase">
+            <thead className="bg-slate-900 text-left text-xs text-slate-400 uppercase">
               <tr>
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Project Title</th>
                 <th className="px-4 py-2"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800">
               {teams.map((t) => (
                 <tr key={t.id}>
-                  <td className="px-4 py-2 font-medium text-slate-900">{t.name}</td>
+                  <td className="px-4 py-2 font-medium text-white">{t.name}</td>
                   <td className="px-4 py-2">
                     <Input
                       value={editing[t.id] ?? t.project_title ?? ""}

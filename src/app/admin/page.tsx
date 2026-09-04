@@ -80,7 +80,7 @@ export default function AdminDashboard() {
         title="Live Dashboard"
         description="Real-time view of who's on-site right now."
         action={
-          <Link href="/admin/movement" className="text-sm text-indigo-600 hover:underline font-medium">
+          <Link href="/admin/movement" className="text-sm text-sky-400 hover:underline font-medium">
             Full movement log →
           </Link>
         }
@@ -96,21 +96,21 @@ export default function AdminDashboard() {
 
       <div className="grid lg:grid-cols-2 gap-6">
         <Card className="p-4">
-          <h2 className="font-semibold text-slate-900 mb-3">Currently Outside</h2>
+          <h2 className="font-semibold text-white mb-3">Currently Outside</h2>
           {loading ? (
-            <p className="text-sm text-slate-400">Loading…</p>
+            <p className="text-sm text-slate-500">Loading…</p>
           ) : outRows.length === 0 ? (
-            <p className="text-sm text-slate-400">Nobody is currently outside.</p>
+            <p className="text-sm text-slate-500">Nobody is currently outside.</p>
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-slate-800">
               {outRows.map((r) => {
                 const durationMs = now - new Date(r.checked_out_at).getTime();
                 const over = durationMs > THRESHOLD_MS;
                 return (
                   <li key={r.participant_id} className="py-2.5 flex items-center justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-slate-900 truncate">{r.name}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-sm font-medium text-white truncate">{r.name}</p>
+                      <p className="text-xs text-slate-400">
                         {r.unique_code} · left {formatTime(r.checked_out_at)}
                         {r.gate_label ? ` · ${r.gate_label}` : ""}
                       </p>
@@ -124,18 +124,18 @@ export default function AdminDashboard() {
         </Card>
 
         <Card className="p-4">
-          <h2 className="font-semibold text-slate-900 mb-3">Recent Activity</h2>
+          <h2 className="font-semibold text-white mb-3">Recent Activity</h2>
           {loading ? (
-            <p className="text-sm text-slate-400">Loading…</p>
+            <p className="text-sm text-slate-500">Loading…</p>
           ) : recentLogs.length === 0 ? (
-            <p className="text-sm text-slate-400">No movement yet.</p>
+            <p className="text-sm text-slate-500">No movement yet.</p>
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-slate-800">
               {recentLogs.map((log) => (
                 <li key={log.id} className="py-2.5 flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-slate-900 truncate">{log.participants?.name ?? "—"}</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-sm font-medium text-white truncate">{log.participants?.name ?? "—"}</p>
+                    <p className="text-xs text-slate-400">
                       {log.participants?.unique_code} {log.gate_label ? `· ${log.gate_label}` : ""}
                     </p>
                   </div>
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
                     <Badge tone={log.action === "CHECK_IN" ? "green" : "amber"}>
                       {log.action === "CHECK_IN" ? "IN" : "OUT"}
                     </Badge>
-                    <p className="text-xs text-slate-400 mt-0.5">{formatTime(log.timestamp)}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{formatTime(log.timestamp)}</p>
                   </div>
                 </li>
               ))}

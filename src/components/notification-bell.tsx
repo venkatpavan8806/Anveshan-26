@@ -30,7 +30,7 @@ export function NotificationBell({ participantId }: { participantId: string }) {
   }, [load]);
 
   return (
-    <Link href="/participant/notifications" className="relative inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-slate-100 transition">
+    <Link href="/participant/notifications" className="relative inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-slate-800 transition">
       <span aria-hidden className="text-lg">
         🔔
       </span>

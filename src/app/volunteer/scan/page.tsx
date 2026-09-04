@@ -104,19 +104,19 @@ export default function ScannerPage() {
   return (
     <div className="max-w-md mx-auto">
       <Card className="p-4 mb-4">
-        <label className="block text-xs font-medium text-slate-500 mb-1">Gate label</label>
+        <label className="block text-xs font-medium text-slate-400 mb-1">Gate label</label>
         <Input value={gateLabel} onChange={(e) => setGateLabel(e.target.value)} placeholder="e.g. Main Gate" />
       </Card>
 
       <Card className="p-4 mb-4">
         <div id={READER_ID} className="rounded-lg overflow-hidden" />
-        {cameraError && <p className="text-sm text-red-600 mt-2">{cameraError}</p>}
-        {!running && !cameraError && <p className="text-sm text-slate-400 mt-2">Starting camera…</p>}
+        {cameraError && <p className="text-sm text-red-400 mt-2">{cameraError}</p>}
+        {!running && !cameraError && <p className="text-sm text-slate-500 mt-2">Starting camera…</p>}
       </Card>
 
       {lastResult && (
-        <Card className={`p-4 mb-4 border-2 ${lastResult.action === "CHECK_IN" ? "border-emerald-400" : "border-amber-400"}`}>
-          <p className="font-semibold text-slate-900">{lastResult.name}</p>
+        <Card className={`p-4 mb-4 border-2 ${lastResult.action === "CHECK_IN" ? "border-emerald-500/50" : "border-amber-400"}`}>
+          <p className="font-semibold text-white">{lastResult.name}</p>
           <Badge tone={lastResult.action === "CHECK_IN" ? "green" : "amber"}>
             {lastResult.action === "CHECK_IN" ? "Checked IN" : "Checked OUT"}
           </Badge>
@@ -124,8 +124,8 @@ export default function ScannerPage() {
       )}
 
       {lookupError && (
-        <Card className="p-4 mb-4 border-2 border-red-300">
-          <p className="text-sm text-red-600">{lookupError}</p>
+        <Card className="p-4 mb-4 border-2 border-red-500/40">
+          <p className="text-sm text-red-400">{lookupError}</p>
           <Button variant="secondary" className="mt-3" onClick={dismiss}>
             Dismiss
           </Button>
@@ -133,23 +133,23 @@ export default function ScannerPage() {
       )}
 
       {found && (
-        <Card className="p-4 border-2 border-indigo-300">
+        <Card className="p-4 border-2 border-sky-500/40">
           <div className="flex items-center gap-3 mb-3">
             {found.photo_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={found.photo_url} alt={found.name} className="w-14 h-14 rounded-full object-cover" />
             ) : (
-              <div className="w-14 h-14 rounded-full bg-slate-100" />
+              <div className="w-14 h-14 rounded-full bg-slate-800" />
             )}
             <div>
-              <p className="font-semibold text-slate-900">{found.name}</p>
-              <p className="text-xs text-slate-500">
+              <p className="font-semibold text-white">{found.name}</p>
+              <p className="text-xs text-slate-400">
                 {found.unique_code} {found.teams?.name ? `· ${found.teams.name}` : ""}
               </p>
               <Badge tone={statusTone(found.status)}>{statusLabel(found.status)}</Badge>
             </div>
           </div>
-          <p className="text-sm text-slate-600 mb-3">
+          <p className="text-sm text-slate-300 mb-3">
             Confirm to mark this participant as{" "}
             <span className="font-semibold">{found.status === "IN" ? "CHECKED OUT" : "CHECKED IN"}</span>.
           </p>

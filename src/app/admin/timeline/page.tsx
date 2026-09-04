@@ -119,11 +119,11 @@ export default function TimelineAdminPage() {
               className="sm:col-span-2"
             />
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Start</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Start</label>
               <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} required />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">End (optional)</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">End (optional)</label>
               <Input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
             </div>
             <Button type="submit" disabled={saving} className="sm:col-span-2 w-fit">
@@ -134,7 +134,7 @@ export default function TimelineAdminPage() {
       )}
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-500">Loading…</p>
       ) : (
         <div className="space-y-3">
           {events.map((ev) =>
@@ -150,11 +150,11 @@ export default function TimelineAdminPage() {
                     className="sm:col-span-2"
                   />
                   <div>
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Start</label>
+                    <label className="block text-xs font-medium text-slate-400 mb-1">Start</label>
                     <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} required />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-500 mb-1">End (optional)</label>
+                    <label className="block text-xs font-medium text-slate-400 mb-1">End (optional)</label>
                     <Input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
                   </div>
                   <div className="sm:col-span-2 flex gap-2">
@@ -170,9 +170,9 @@ export default function TimelineAdminPage() {
             ) : (
               <Card key={ev.id} className="p-4 flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-medium text-slate-900">{ev.title}</p>
-                  {ev.description && <p className="text-sm text-slate-500 mt-0.5">{ev.description}</p>}
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="font-medium text-white">{ev.title}</p>
+                  {ev.description && <p className="text-sm text-slate-400 mt-0.5">{ev.description}</p>}
+                  <p className="text-xs text-slate-500 mt-1">
                     {formatDateTime(ev.start_time)}
                     {ev.end_time ? ` – ${formatDateTime(ev.end_time)}` : ""}
                   </p>

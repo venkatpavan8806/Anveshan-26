@@ -101,15 +101,15 @@ export default function ParticipantsPage() {
         <Card className="p-4 mb-6">
           <form onSubmit={addParticipant} className="grid sm:grid-cols-4 gap-3 items-end">
             <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-slate-500 mb-1">Name</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Name</label>
               <Input value={name} onChange={(e) => setName(e.target.value)} required />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Contact</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Contact</label>
               <Input value={contact} onChange={(e) => setContact(e.target.value)} />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Team</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Team</label>
               <Select value={teamId} onChange={(e) => setTeamId(e.target.value)}>
                 <option value="">— none —</option>
                 {teams.map((t) => (
@@ -123,7 +123,7 @@ export default function ParticipantsPage() {
               <Button type="submit" disabled={saving}>
                 {saving ? "Saving…" : "Save participant"}
               </Button>
-              {error && <p className="text-sm text-red-600">{error}</p>}
+              {error && <p className="text-sm text-red-400">{error}</p>}
             </div>
           </form>
         </Card>
@@ -135,13 +135,13 @@ export default function ParticipantsPage() {
 
       <Card className="overflow-hidden">
         {loading ? (
-          <p className="p-4 text-sm text-slate-400">Loading…</p>
+          <p className="p-4 text-sm text-slate-500">Loading…</p>
         ) : filtered.length === 0 ? (
-          <p className="p-4 text-sm text-slate-400">No participants found.</p>
+          <p className="p-4 text-sm text-slate-500">No participants found.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs text-slate-500 uppercase">
+              <thead className="bg-slate-900 text-left text-xs text-slate-400 uppercase">
                 <tr>
                   <th className="px-4 py-2">Code</th>
                   <th className="px-4 py-2">Name</th>
@@ -150,17 +150,17 @@ export default function ParticipantsPage() {
                   <th className="px-4 py-2"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-800">
                 {filtered.map((p) => (
                   <tr key={p.id}>
                     <td className="px-4 py-2 font-mono text-xs">{p.unique_code}</td>
-                    <td className="px-4 py-2 font-medium text-slate-900">{p.name}</td>
-                    <td className="px-4 py-2 text-slate-600">{p.teams?.name ?? "—"}</td>
+                    <td className="px-4 py-2 font-medium text-white">{p.name}</td>
+                    <td className="px-4 py-2 text-slate-300">{p.teams?.name ?? "—"}</td>
                     <td className="px-4 py-2">
                       <Badge tone={statusTone(p.status)}>{statusLabel(p.status)}</Badge>
                     </td>
                     <td className="px-4 py-2 text-right">
-                      <Link href={`/admin/participants/${p.id}`} className="text-indigo-600 hover:underline text-sm">
+                      <Link href={`/admin/participants/${p.id}`} className="text-sky-400 hover:underline text-sm">
                         View / Badge
                       </Link>
                     </td>

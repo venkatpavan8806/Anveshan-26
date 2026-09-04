@@ -76,7 +76,7 @@ export default function ParticipantDetailPage() {
     router.push("/admin/participants");
   }
 
-  if (!participant) return <p className="text-sm text-slate-400">Loading…</p>;
+  if (!participant) return <p className="text-sm text-slate-500">Loading…</p>;
 
   return (
     <div>
@@ -92,9 +92,9 @@ export default function ParticipantDetailPage() {
             // eslint-disable-next-line @next/next/no-img-element
             <img src={participant.photo_url} alt={participant.name} className="w-24 h-24 rounded-full object-cover mb-3" />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-slate-100 mb-3" />
+            <div className="w-24 h-24 rounded-full bg-slate-800 mb-3" />
           )}
-          <label className="text-xs text-indigo-600 hover:underline cursor-pointer mb-4">
+          <label className="text-xs text-sky-400 hover:underline cursor-pointer mb-4">
             {uploading ? "Uploading…" : "Upload photo"}
             <input type="file" accept="image/*" className="hidden" onChange={uploadPhoto} disabled={uploading} />
           </label>
@@ -106,17 +106,17 @@ export default function ParticipantDetailPage() {
         </Card>
 
         <Card className="p-5 lg:col-span-2 space-y-4">
-          <h2 className="font-semibold text-slate-900">Details</h2>
+          <h2 className="font-semibold text-white">Details</h2>
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Name</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Name</label>
             <Input defaultValue={participant.name} onBlur={(e) => updateField("name", e.target.value)} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Contact</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Contact</label>
             <Input defaultValue={participant.contact ?? ""} onBlur={(e) => updateField("contact", e.target.value || null)} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Team</label>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Team</label>
             <Select
               defaultValue={participant.team_id ?? ""}
               onChange={(e) => updateField("team_id", e.target.value || null)}
@@ -129,7 +129,7 @@ export default function ParticipantDetailPage() {
               ))}
             </Select>
           </div>
-          {saving && <p className="text-xs text-slate-400">Saving…</p>}
+          {saving && <p className="text-xs text-slate-500">Saving…</p>}
           <div className="pt-2">
             <Button variant="danger" onClick={deleteParticipant}>
               Delete participant
@@ -139,18 +139,18 @@ export default function ParticipantDetailPage() {
       </div>
 
       <Card className="p-4 mt-6">
-        <h2 className="font-semibold text-slate-900 mb-3">Movement history</h2>
+        <h2 className="font-semibold text-white mb-3">Movement history</h2>
         {logs.length === 0 ? (
-          <p className="text-sm text-slate-400">No movement recorded yet.</p>
+          <p className="text-sm text-slate-500">No movement recorded yet.</p>
         ) : (
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-slate-800">
             {logs.map((l) => (
               <li key={l.id} className="py-2 flex items-center justify-between text-sm">
                 <span>
                   <Badge tone={l.action === "CHECK_IN" ? "green" : "amber"}>{l.action === "CHECK_IN" ? "IN" : "OUT"}</Badge>
-                  {l.gate_label && <span className="text-slate-500 ml-2">{l.gate_label}</span>}
+                  {l.gate_label && <span className="text-slate-400 ml-2">{l.gate_label}</span>}
                 </span>
-                <span className="text-slate-500">{formatDateTime(l.timestamp)}</span>
+                <span className="text-slate-400">{formatDateTime(l.timestamp)}</span>
               </li>
             ))}
           </ul>

@@ -105,14 +105,14 @@ export default function ImportParticipantsPage() {
 
       <Card className="p-4 mb-6">
         <input type="file" accept=".csv" onChange={handleFile} className="text-sm" />
-        {fileName && <p className="text-xs text-slate-500 mt-2">{fileName} — {rows.length} rows parsed</p>}
+        {fileName && <p className="text-xs text-slate-400 mt-2">{fileName} — {rows.length} rows parsed</p>}
       </Card>
 
       {rows.length > 0 && !result && (
         <Card className="overflow-hidden mb-6">
           <div className="max-h-96 overflow-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs text-slate-500 uppercase sticky top-0">
+              <thead className="bg-slate-900 text-left text-xs text-slate-400 uppercase sticky top-0">
                 <tr>
                   <th className="px-4 py-2">Name</th>
                   <th className="px-4 py-2">Contact</th>
@@ -120,19 +120,19 @@ export default function ImportParticipantsPage() {
                   <th className="px-4 py-2">Code</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-800">
                 {rows.slice(0, 200).map((r, i) => (
                   <tr key={i}>
                     <td className="px-4 py-2">{r.name}</td>
-                    <td className="px-4 py-2 text-slate-500">{r.contact || "—"}</td>
-                    <td className="px-4 py-2 text-slate-500">{r.team || "—"}</td>
-                    <td className="px-4 py-2 text-slate-500 font-mono text-xs">{r.unique_code || "auto"}</td>
+                    <td className="px-4 py-2 text-slate-400">{r.contact || "—"}</td>
+                    <td className="px-4 py-2 text-slate-400">{r.team || "—"}</td>
+                    <td className="px-4 py-2 text-slate-400 font-mono text-xs">{r.unique_code || "auto"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="p-4 border-t border-slate-100 flex items-center gap-3">
+          <div className="p-4 border-t border-slate-800 flex items-center gap-3">
             <Button onClick={runImport} disabled={importing}>
               {importing ? `Importing ${progress}/${rows.length}…` : `Import ${rows.length} participants`}
             </Button>
@@ -142,11 +142,11 @@ export default function ImportParticipantsPage() {
 
       {result && (
         <Card className="p-4">
-          <p className="text-sm text-emerald-600 font-medium">{result.ok} imported successfully.</p>
+          <p className="text-sm text-emerald-400 font-medium">{result.ok} imported successfully.</p>
           {result.failed.length > 0 && (
             <div className="mt-2">
-              <p className="text-sm text-red-600 font-medium">{result.failed.length} failed:</p>
-              <ul className="text-xs text-red-500 list-disc pl-5 mt-1">
+              <p className="text-sm text-red-400 font-medium">{result.failed.length} failed:</p>
+              <ul className="text-xs text-red-400 list-disc pl-5 mt-1">
                 {result.failed.map((f, i) => (
                   <li key={i}>{f}</li>
                 ))}

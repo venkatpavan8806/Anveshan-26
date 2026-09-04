@@ -3,7 +3,7 @@
   "short_name": "Anveshan",
   "start_url": "/participant",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#4f46e5",
+  "background_color": "#0a0f24",
+  "theme_color": "#0a0f24",
   "icons": []
 }

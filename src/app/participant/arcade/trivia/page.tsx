@@ -49,10 +49,10 @@ export default function TriviaPage() {
     }, 800);
   }
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>;
+  if (loading) return <p className="text-sm text-slate-500">Loading…</p>;
   if (questions.length === 0)
     return (
-      <Card className="p-6 text-center text-sm text-slate-400">
+      <Card className="p-6 text-center text-sm text-slate-500">
         No trivia questions yet — check back once the organizers add some.
       </Card>
     );
@@ -61,8 +61,8 @@ export default function TriviaPage() {
     return (
       <Card className="p-8 text-center max-w-md mx-auto">
         <p className="text-4xl mb-2">🎉</p>
-        <h2 className="text-xl font-bold text-slate-900">You scored {score}</h2>
-        <p className="text-sm text-slate-500 mt-1">out of {questions.length * 10}</p>
+        <h2 className="text-xl font-bold text-white">You scored {score}</h2>
+        <p className="text-sm text-slate-400 mt-1">out of {questions.length * 10}</p>
         <div className="flex gap-2 justify-center mt-6">
           <Button
             onClick={() => {
@@ -88,22 +88,22 @@ export default function TriviaPage() {
 
   return (
     <div className="max-w-md mx-auto">
-      <div className="flex justify-between text-sm text-slate-500 mb-3">
+      <div className="flex justify-between text-sm text-slate-400 mb-3">
         <span>
           Question {index + 1} / {questions.length}
         </span>
         <span>Score: {score}</span>
       </div>
       <Card className="p-5">
-        <h2 className="font-semibold text-slate-900 mb-4">{q.question}</h2>
+        <h2 className="font-semibold text-white mb-4">{q.question}</h2>
         <div className="space-y-2">
           {q.options.map((opt, i) => {
             const isCorrect = i === q.correct_index;
             const isSelected = i === selected;
-            let style = "border-slate-200 hover:border-indigo-300";
+            let style = "border-slate-800 hover:border-sky-500/40";
             if (selected !== null) {
-              if (isCorrect) style = "border-emerald-400 bg-emerald-50";
-              else if (isSelected) style = "border-red-400 bg-red-50";
+              if (isCorrect) style = "border-emerald-500/50 bg-emerald-500/10";
+              else if (isSelected) style = "border-red-500/50 bg-red-500/10";
             }
             return (
               <button

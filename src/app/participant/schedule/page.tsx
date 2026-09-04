@@ -14,14 +14,14 @@ function Countdown({ target }: { target: string }) {
   }, []);
 
   const diff = new Date(target).getTime() - now;
-  if (diff <= 0) return <span className="text-emerald-600 font-semibold">It&apos;s time!</span>;
+  if (diff <= 0) return <span className="text-emerald-400 font-semibold">It&apos;s time!</span>;
 
   const h = Math.floor(diff / 3_600_000);
   const m = Math.floor((diff % 3_600_000) / 60_000);
   const s = Math.floor((diff % 60_000) / 1000);
 
   return (
-    <span className="font-mono font-semibold text-indigo-600">
+    <span className="font-mono font-semibold text-sky-400">
       {h > 0 ? `${h}h ` : ""}
       {m}m {s}s
     </span>
@@ -60,13 +60,13 @@ export default function MySchedulePage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-slate-900 mb-1">My Schedule</h1>
-      <p className="text-slate-500 text-sm mb-6">Your team&apos;s presentation slot(s).</p>
+      <h1 className="text-2xl font-bold text-white mb-1">My Schedule</h1>
+      <p className="text-slate-400 text-sm mb-6">Your team&apos;s presentation slot(s).</p>
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-500">Loading…</p>
       ) : slots.length === 0 ? (
-        <Card className="p-6 text-center text-sm text-slate-400">
+        <Card className="p-6 text-center text-sm text-slate-500">
           Nothing scheduled yet — check back later, or make sure you&apos;re linked to a team.
         </Card>
       ) : (
@@ -74,13 +74,13 @@ export default function MySchedulePage() {
           {slots.map((s) => (
             <Card key={s.id} className="p-5">
               <div className="flex items-start justify-between gap-3 mb-2">
-                <h2 className="font-semibold text-slate-900">{s.title}</h2>
+                <h2 className="font-semibold text-white">{s.title}</h2>
                 <Badge tone="indigo">{s.status.replace("_", " ")}</Badge>
               </div>
-              <p className="text-sm text-slate-500">{formatDateTime(s.start_time)} – {formatDateTime(s.end_time)}</p>
-              {s.location && <p className="text-sm text-slate-500 mt-1">📍 {s.location}</p>}
-              <div className="mt-3 pt-3 border-t border-slate-100">
-                <span className="text-xs text-slate-400 mr-2">Starts in</span>
+              <p className="text-sm text-slate-400">{formatDateTime(s.start_time)} – {formatDateTime(s.end_time)}</p>
+              {s.location && <p className="text-sm text-slate-400 mt-1">📍 {s.location}</p>}
+              <div className="mt-3 pt-3 border-t border-slate-800">
+                <span className="text-xs text-slate-500 mr-2">Starts in</span>
                 <Countdown target={s.start_time} />
               </div>
             </Card>

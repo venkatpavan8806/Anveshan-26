@@ -83,7 +83,7 @@ export default function RulesAdminPage() {
       </Card>
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-500">Loading…</p>
       ) : (
         <div className="space-y-4">
           {rules.map((r, i) => (

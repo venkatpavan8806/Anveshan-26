@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #0a0f24;
+  --foreground: #f1f5f9;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -14,6 +15,10 @@
 
 body {
   background: var(--background);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(56, 189, 248, 0.12), transparent),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(250, 204, 21, 0.06), transparent);
+  background-attachment: fixed;
   color: var(--foreground);
 }
 
@@ -22,6 +27,7 @@ body {
   font-weight: 700;
   margin-top: 1em;
   margin-bottom: 0.4em;
+  color: #f8fafc;
 }
 .prose-anv h1 { font-size: 1.5rem; }
 .prose-anv h2 { font-size: 1.25rem; }
@@ -29,7 +35,7 @@ body {
 .prose-anv p { margin-bottom: 0.75em; line-height: 1.6; }
 .prose-anv ul { list-style: disc; padding-left: 1.5em; margin-bottom: 0.75em; }
 .prose-anv ol { list-style: decimal; padding-left: 1.5em; margin-bottom: 0.75em; }
-.prose-anv strong { font-weight: 700; }
+.prose-anv strong { font-weight: 700; color: #f8fafc; }
 .prose-anv em { font-style: italic; }
-.prose-anv code { background: #e2e8f0; padding: 0.1em 0.35em; border-radius: 0.25em; font-size: 0.9em; }
-.prose-anv a { color: #4f46e5; text-decoration: underline; }
+.prose-anv code { background: rgba(148, 163, 184, 0.15); padding: 0.1em 0.35em; border-radius: 0.25em; font-size: 0.9em; }
+.prose-anv a { color: #38bdf8; text-decoration: underline; }

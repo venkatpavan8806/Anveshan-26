@@ -77,17 +77,17 @@ function canMove(grid: Grid) {
 }
 
 const TILE_COLORS: Record<number, string> = {
-  2: "bg-slate-100 text-slate-800",
-  4: "bg-slate-200 text-slate-800",
-  8: "bg-amber-200 text-amber-900",
-  16: "bg-amber-300 text-amber-900",
+  2: "bg-slate-800 text-slate-100",
+  4: "bg-slate-700 text-slate-100",
+  8: "bg-amber-200 text-amber-200",
+  16: "bg-amber-300 text-amber-200",
   32: "bg-orange-300 text-white",
   64: "bg-orange-400 text-white",
   128: "bg-yellow-300 text-white",
   256: "bg-yellow-400 text-white",
   512: "bg-yellow-500 text-white",
-  1024: "bg-indigo-400 text-white",
-  2048: "bg-indigo-600 text-white",
+  1024: "bg-sky-400 text-white",
+  2048: "bg-sky-500 text-white",
 };
 
 export default function Game2048Page() {
@@ -163,13 +163,13 @@ export default function Game2048Page() {
   return (
     <div className="max-w-sm mx-auto">
       <div className="flex justify-between items-center mb-3">
-        <h1 className="text-xl font-bold text-slate-900">2048</h1>
-        <span className="text-sm font-semibold text-slate-700">Score: {score}</span>
+        <h1 className="text-xl font-bold text-white">2048</h1>
+        <span className="text-sm font-semibold text-slate-300">Score: {score}</span>
       </div>
-      <p className="text-xs text-slate-500 mb-3">Arrow keys, or swipe on mobile.</p>
+      <p className="text-xs text-slate-400 mb-3">Arrow keys, or swipe on mobile.</p>
 
       <div
-        className="bg-slate-300 rounded-xl p-2 grid grid-cols-4 gap-2 touch-none"
+        className="bg-slate-700 rounded-xl p-2 grid grid-cols-4 gap-2 touch-none"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -177,7 +177,7 @@ export default function Game2048Page() {
           <div
             key={i}
             className={`aspect-square rounded-lg flex items-center justify-center font-bold text-lg ${
-              v ? TILE_COLORS[v] ?? "bg-indigo-700 text-white" : "bg-slate-200/60"
+              v ? TILE_COLORS[v] ?? "bg-sky-600 text-white" : "bg-slate-700/60"
             }`}
           >
             {v || ""}
@@ -187,7 +187,7 @@ export default function Game2048Page() {
 
       {gameOver && (
         <Card className="p-5 mt-4 text-center">
-          <p className="font-semibold text-slate-900">Game over — score {score} 🎉</p>
+          <p className="font-semibold text-white">Game over — score {score} 🎉</p>
           <div className="flex gap-2 justify-center mt-3">
             <Button onClick={reset}>Play again</Button>
             <Link href="/participant/arcade">
