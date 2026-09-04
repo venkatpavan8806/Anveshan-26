@@ -17,6 +17,7 @@ export default function ScannerPage() {
   const [running, setRunning] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [gateLabel, setGateLabel] = useState("Main Gate");
+  const [manualCode, setManualCode] = useState("");
 
   const [found, setFound] = useState<FoundParticipant | null>(null);
   const [lookupError, setLookupError] = useState<string | null>(null);
@@ -69,10 +70,21 @@ export default function ScannerPage() {
       .catch((err) => setCameraError(err?.message ?? "Could not access camera"));
 
     return () => {
-      scanner
-        .stop()
-        .then(() => scanner.clear())
-        .catch(() => {});
+      // .stop() throws synchronously (not just a rejected promise) if the
+      // camera never actually started (denied/slow permission, or this
+      // effect re-running before start() resolved) — guard on isScanning.
+      if (scanner.isScanning) {
+        scanner
+          .stop()
+          .then(() => scanner.clear())
+          .catch(() => {});
+      } else {
+        try {
+          scanner.clear();
+        } catch {
+          // nothing to clear
+        }
+      }
     };
   }, [lookupCode]);
 
@@ -101,6 +113,13 @@ export default function ScannerPage() {
     setLookupError(null);
   }
 
+  function submitManualCode(e: React.FormEvent) {
+    e.preventDefault();
+    if (!manualCode.trim() || busyRef.current) return;
+    lookupCode(manualCode);
+    setManualCode("");
+  }
+
   return (
     <div className="max-w-md mx-auto">
       <Card className="p-4 mb-4">
@@ -112,6 +131,21 @@ export default function ScannerPage() {
         <div id={READER_ID} className="rounded-lg overflow-hidden" />
         {cameraError && <p className="text-sm text-red-400 mt-2">{cameraError}</p>}
         {!running && !cameraError && <p className="text-sm text-slate-500 mt-2">Starting camera…</p>}
+      </Card>
+
+      <Card className="p-4 mb-4">
+        <label className="block text-xs font-medium text-slate-400 mb-1">
+          Or type their code (participant shows you their ID from their profile)
+        </label>
+        <form onSubmit={submitManualCode} className="flex gap-2">
+          <Input
+            value={manualCode}
+            onChange={(e) => setManualCode(e.target.value)}
+            placeholder="ANV-0001"
+            className="uppercase"
+          />
+          <Button type="submit">Look up</Button>
+        </form>
       </Card>
 
       {lastResult && (

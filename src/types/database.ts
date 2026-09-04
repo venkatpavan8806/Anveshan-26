@@ -200,6 +200,10 @@ export type Database = {
         Args: { p_participant_id: string; p_gate_label?: string | null };
         Returns: Participant;
       };
+      update_my_profile: {
+        Args: { p_name?: string | null; p_contact?: string | null; p_photo_url?: string | null };
+        Returns: Participant;
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

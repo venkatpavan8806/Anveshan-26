@@ -28,7 +28,13 @@ export default async function ParticipantHome() {
         )}
       </p>
 
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4">
+        <Link href="/participant/profile">
+          <Card className="p-4 hover:border-sky-500/40 transition">
+            <p className="font-medium text-white">🪪 My Profile</p>
+            <p className="text-xs text-slate-400 mt-1">Your QR/ID & edit your info</p>
+          </Card>
+        </Link>
         <Link href="/participant/rules">
           <Card className="p-4 hover:border-sky-500/40 transition">
             <p className="font-medium text-white">📋 Rules</p>
