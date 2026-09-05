@@ -96,9 +96,14 @@ export default function ParticipantsPage() {
   }
 
   function startToggle(row: Row) {
-    // First-time arrival isn't a "break" — no reason needed, just check them in.
+    // Only leaving (IN -> OUT) needs a reason. First-time arrival and
+    // coming back from a break are direct, no prompt.
     if (row.status === "PENDING") {
-      toggleBreak(row.id, null);
+      toggleBreak(row.id, "Check in");
+      return;
+    }
+    if (row.status === "OUT") {
+      toggleBreak(row.id, "Back from break");
       return;
     }
     setPendingToggle(row);
@@ -226,12 +231,8 @@ export default function ParticipantsPage() {
       {pendingToggle && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
           <Card className="p-5 w-full max-w-sm">
-            <h2 className="font-semibold text-white mb-1">
-              {pendingToggle.status === "IN" ? "Mark on break" : "Mark back"} — {pendingToggle.name}
-            </h2>
-            <p className="text-xs text-slate-400 mb-4">
-              {pendingToggle.status === "IN" ? "Why are they stepping out?" : "Welcome back — reason on record for the log."}
-            </p>
+            <h2 className="font-semibold text-white mb-1">Mark on break — {pendingToggle.name}</h2>
+            <p className="text-xs text-slate-400 mb-4">Why are they stepping out?</p>
             <label className="block text-xs font-medium text-slate-400 mb-1">Reason</label>
             <Select value={reason} onChange={(e) => setReason(e.target.value)} className="mb-3">
               {MOVEMENT_REASONS.map((r) => (

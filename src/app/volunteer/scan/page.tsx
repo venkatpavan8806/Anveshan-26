@@ -97,7 +97,13 @@ export default function ScannerPage() {
     if (!found) return;
     setConfirming(true);
     const finalReason =
-      found.status === "PENDING" ? null : reason === "Other" ? customReason.trim() || "Other" : reason;
+      found.status === "PENDING"
+        ? "Check in"
+        : found.status === "OUT"
+          ? "Back from break"
+          : reason === "Other"
+            ? customReason.trim() || "Other"
+            : reason;
     const supabase = createClient();
     const { data, error } = await supabase.rpc("toggle_participant_status", {
       p_participant_id: found.id,
@@ -196,7 +202,7 @@ export default function ScannerPage() {
             <span className="font-semibold">{found.status === "IN" ? "CHECKED OUT" : "CHECKED IN"}</span>.
           </p>
 
-          {found.status !== "PENDING" && (
+          {found.status === "IN" && (
             <div className="mb-3">
               <label className="block text-xs font-medium text-slate-400 mb-1">Reason</label>
               <Select value={reason} onChange={(e) => setReason(e.target.value)} className="mb-2">
