@@ -10,6 +10,7 @@ interface LogRow {
   action: "CHECK_IN" | "CHECK_OUT";
   timestamp: string;
   gate_label: string | null;
+  reason: string | null;
   participants: { name: string; unique_code: string } | null;
   scanner: { name: string } | null;
 }
@@ -24,7 +25,7 @@ export default function MovementLogPage() {
     const supabase = createClient();
     const { data } = await supabase
       .from("movement_logs")
-      .select("id, action, timestamp, gate_label, participants(name, unique_code), scanner:scanned_by(name)")
+      .select("id, action, timestamp, gate_label, reason, participants(name, unique_code), scanner:scanned_by(name)")
       .order("timestamp", { ascending: false })
       .limit(1000);
     setRows((data as unknown as LogRow[]) ?? []);
@@ -41,13 +42,14 @@ export default function MovementLogPage() {
       !q ||
       r.participants?.name.toLowerCase().includes(q) ||
       r.participants?.unique_code.toLowerCase().includes(q) ||
-      r.gate_label?.toLowerCase().includes(q);
+      r.gate_label?.toLowerCase().includes(q) ||
+      r.reason?.toLowerCase().includes(q);
     const matchesAction = !actionFilter || r.action === actionFilter;
     return matchesSearch && matchesAction;
   });
 
   function exportCsv() {
-    const header = "name,code,action,timestamp,gate,scanned_by\n";
+    const header = "name,code,action,timestamp,gate,reason,scanned_by\n";
     const body = filtered
       .map((r) =>
         [
@@ -56,6 +58,7 @@ export default function MovementLogPage() {
           r.action,
           r.timestamp,
           r.gate_label ?? "",
+          r.reason ?? "",
           r.scanner?.name ?? "",
         ]
           .map((v) => `"${String(v).replace(/"/g, '""')}"`)
@@ -101,6 +104,7 @@ export default function MovementLogPage() {
                   <th className="px-4 py-2">Participant</th>
                   <th className="px-4 py-2">Action</th>
                   <th className="px-4 py-2">Gate</th>
+                  <th className="px-4 py-2">Reason</th>
                   <th className="px-4 py-2">Scanned by</th>
                   <th className="px-4 py-2">Time</th>
                 </tr>
@@ -118,6 +122,7 @@ export default function MovementLogPage() {
                       </Badge>
                     </td>
                     <td className="px-4 py-2 text-slate-400">{r.gate_label ?? "—"}</td>
+                    <td className="px-4 py-2 text-slate-400">{r.reason ?? "—"}</td>
                     <td className="px-4 py-2 text-slate-400">{r.scanner?.name ?? "—"}</td>
                     <td className="px-4 py-2 text-slate-400">{formatDateTime(r.timestamp)}</td>
                   </tr>

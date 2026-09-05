@@ -149,6 +149,7 @@ export default function ParticipantDetailPage() {
                 <span>
                   <Badge tone={l.action === "CHECK_IN" ? "green" : "amber"}>{l.action === "CHECK_IN" ? "IN" : "OUT"}</Badge>
                   {l.gate_label && <span className="text-slate-400 ml-2">{l.gate_label}</span>}
+                  {l.reason && <span className="text-slate-500 ml-2">· {l.reason}</span>}
                 </span>
                 <span className="text-slate-400">{formatDateTime(l.timestamp)}</span>
               </li>

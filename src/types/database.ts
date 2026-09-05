@@ -44,6 +44,7 @@ export type MovementLog = {
   timestamp: string;
   scanned_by: string | null;
   gate_label: string | null;
+  reason: string | null;
 }
 
 export type ScheduleSlot = {
@@ -124,6 +125,7 @@ export type CurrentlyOutRow = {
   team_id: string | null;
   checked_out_at: string;
   gate_label: string | null;
+  reason: string | null;
 }
 
 export type Database = {
@@ -197,7 +199,7 @@ export type Database = {
     Functions: {
       next_participant_code: { Args: Record<string, never>; Returns: string };
       toggle_participant_status: {
-        Args: { p_participant_id: string; p_gate_label?: string | null };
+        Args: { p_participant_id: string; p_gate_label?: string | null; p_reason?: string | null };
         Returns: Participant;
       };
       update_my_profile: {

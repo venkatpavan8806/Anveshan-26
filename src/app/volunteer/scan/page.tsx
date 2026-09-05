@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { createClient } from "@/lib/supabase/client";
-import { Card, Button, Input, Badge } from "@/components/ui";
+import { Card, Button, Input, Select, Badge } from "@/components/ui";
 import { playBeep } from "@/lib/beep";
 import { statusTone, statusLabel } from "@/lib/utils";
+import { MOVEMENT_REASONS } from "@/lib/movement-reasons";
 import type { Participant } from "@/types/database";
 
 const READER_ID = "qr-reader";
@@ -23,6 +24,8 @@ export default function ScannerPage() {
   const [lookupError, setLookupError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [lastResult, setLastResult] = useState<{ name: string; action: "CHECK_IN" | "CHECK_OUT" } | null>(null);
+  const [reason, setReason] = useState<string>(MOVEMENT_REASONS[0]);
+  const [customReason, setCustomReason] = useState("");
 
   const busyRef = useRef(false);
 
@@ -46,6 +49,8 @@ export default function ScannerPage() {
       playBeep("error");
     } else {
       setFound(data as unknown as FoundParticipant);
+      setReason(MOVEMENT_REASONS[0]);
+      setCustomReason("");
       playBeep("success");
     }
     busyRef.current = false;
@@ -91,10 +96,13 @@ export default function ScannerPage() {
   async function confirmToggle() {
     if (!found) return;
     setConfirming(true);
+    const finalReason =
+      found.status === "PENDING" ? null : reason === "Other" ? customReason.trim() || "Other" : reason;
     const supabase = createClient();
     const { data, error } = await supabase.rpc("toggle_participant_status", {
       p_participant_id: found.id,
       p_gate_label: gateLabel || null,
+      p_reason: finalReason,
     });
 
     if (error) {
@@ -187,6 +195,23 @@ export default function ScannerPage() {
             Confirm to mark this participant as{" "}
             <span className="font-semibold">{found.status === "IN" ? "CHECKED OUT" : "CHECKED IN"}</span>.
           </p>
+
+          {found.status !== "PENDING" && (
+            <div className="mb-3">
+              <label className="block text-xs font-medium text-slate-400 mb-1">Reason</label>
+              <Select value={reason} onChange={(e) => setReason(e.target.value)} className="mb-2">
+                {MOVEMENT_REASONS.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </Select>
+              {reason === "Other" && (
+                <Input placeholder="Describe the reason" value={customReason} onChange={(e) => setCustomReason(e.target.value)} />
+              )}
+            </div>
+          )}
+
           <div className="flex gap-2">
             <Button onClick={confirmToggle} disabled={confirming} className="flex-1">
               {confirming ? "Updating…" : found.status === "IN" ? "Confirm check-out" : "Confirm check-in"}

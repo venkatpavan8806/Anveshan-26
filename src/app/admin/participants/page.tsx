@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { PageHeader, Card, Button, Input, Select, Badge } from "@/components/ui";
 import { statusTone, statusLabel } from "@/lib/utils";
+import { MOVEMENT_REASONS } from "@/lib/movement-reasons";
 import type { Participant, Team } from "@/types/database";
 
 type Row = Participant & { teams: { name: string } | null };
@@ -22,6 +23,9 @@ export default function ParticipantsPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [pendingToggle, setPendingToggle] = useState<Row | null>(null);
+  const [reason, setReason] = useState<string>(MOVEMENT_REASONS[0]);
+  const [customReason, setCustomReason] = useState("");
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -73,12 +77,13 @@ export default function ParticipantsPage() {
     load();
   }
 
-  async function toggleBreak(participantId: string) {
+  async function toggleBreak(participantId: string, reasonText: string | null) {
     setTogglingId(participantId);
     const supabase = createClient();
     await supabase.rpc("toggle_participant_status", {
       p_participant_id: participantId,
       p_gate_label: "Admin Panel",
+      p_reason: reasonText,
     });
     setTogglingId(null);
     load();
@@ -88,6 +93,24 @@ export default function ParticipantsPage() {
     if (status === "IN") return "Mark on break";
     if (status === "OUT") return "Mark back";
     return "Check in";
+  }
+
+  function startToggle(row: Row) {
+    // First-time arrival isn't a "break" — no reason needed, just check them in.
+    if (row.status === "PENDING") {
+      toggleBreak(row.id, null);
+      return;
+    }
+    setPendingToggle(row);
+    setReason(MOVEMENT_REASONS[0]);
+    setCustomReason("");
+  }
+
+  function confirmToggle() {
+    if (!pendingToggle) return;
+    const finalReason = reason === "Other" ? customReason.trim() || "Other" : reason;
+    toggleBreak(pendingToggle.id, finalReason);
+    setPendingToggle(null);
   }
 
   const filtered = rows.filter((r) => {
@@ -183,7 +206,7 @@ export default function ParticipantsPage() {
                           variant="secondary"
                           className="py-1 px-2.5 text-xs"
                           disabled={togglingId === p.id}
-                          onClick={() => toggleBreak(p.id)}
+                          onClick={() => startToggle(p)}
                         >
                           {togglingId === p.id ? "…" : breakButtonLabel(p.status)}
                         </Button>
@@ -199,6 +222,43 @@ export default function ParticipantsPage() {
           </div>
         )}
       </Card>
+
+      {pendingToggle && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <Card className="p-5 w-full max-w-sm">
+            <h2 className="font-semibold text-white mb-1">
+              {pendingToggle.status === "IN" ? "Mark on break" : "Mark back"} — {pendingToggle.name}
+            </h2>
+            <p className="text-xs text-slate-400 mb-4">
+              {pendingToggle.status === "IN" ? "Why are they stepping out?" : "Welcome back — reason on record for the log."}
+            </p>
+            <label className="block text-xs font-medium text-slate-400 mb-1">Reason</label>
+            <Select value={reason} onChange={(e) => setReason(e.target.value)} className="mb-3">
+              {MOVEMENT_REASONS.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </Select>
+            {reason === "Other" && (
+              <Input
+                placeholder="Describe the reason"
+                value={customReason}
+                onChange={(e) => setCustomReason(e.target.value)}
+                className="mb-3"
+              />
+            )}
+            <div className="flex gap-2 mt-2">
+              <Button onClick={confirmToggle} disabled={togglingId === pendingToggle.id} className="flex-1">
+                Confirm
+              </Button>
+              <Button variant="secondary" onClick={() => setPendingToggle(null)}>
+                Cancel
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

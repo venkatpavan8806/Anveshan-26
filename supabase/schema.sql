@@ -84,7 +84,8 @@ create table if not exists public.movement_logs (
   action public.movement_action_t not null,
   timestamp timestamptz not null default now(),
   scanned_by uuid references public.profiles (id) on delete set null,
-  gate_label text
+  gate_label text,
+  reason text
 );
 
 create table if not exists public.schedule_slots (
@@ -242,7 +243,8 @@ as $$ select team_id from public.profiles where id = auth.uid(); $$;
 
 create or replace function public.toggle_participant_status(
   p_participant_id uuid,
-  p_gate_label text default null
+  p_gate_label text default null,
+  p_reason text default null
 )
 returns public.participants
 language plpgsql
@@ -274,14 +276,14 @@ begin
   update public.participants set status = v_new_status where id = p_participant_id
     returning * into v_participant;
 
-  insert into public.movement_logs (participant_id, action, scanned_by, gate_label)
-  values (p_participant_id, v_action, auth.uid(), p_gate_label);
+  insert into public.movement_logs (participant_id, action, scanned_by, gate_label, reason)
+  values (p_participant_id, v_action, auth.uid(), p_gate_label, p_reason);
 
   return v_participant;
 end;
 $$;
 
-grant execute on function public.toggle_participant_status(uuid, text) to authenticated;
+grant execute on function public.toggle_participant_status(uuid, text, text) to authenticated;
 
 -- ============================================================================
 -- 5a. SELF-SERVICE PROFILE EDIT — lets a participant update their own
@@ -524,7 +526,8 @@ select distinct on (p.id)
   p.photo_url,
   p.team_id,
   ml.timestamp as checked_out_at,
-  ml.gate_label
+  ml.gate_label,
+  ml.reason
 from public.participants p
 join public.movement_logs ml on ml.participant_id = p.id and ml.action = 'CHECK_OUT'
 where p.status = 'OUT'

@@ -15,6 +15,7 @@ interface OutRow {
   photo_url: string | null;
   checked_out_at: string;
   gate_label: string | null;
+  reason: string | null;
 }
 
 interface LogRow {
@@ -22,6 +23,7 @@ interface LogRow {
   action: "CHECK_IN" | "CHECK_OUT";
   timestamp: string;
   gate_label: string | null;
+  reason: string | null;
   participants: { name: string; unique_code: string } | null;
 }
 
@@ -44,7 +46,7 @@ export default function AdminDashboard() {
         supabase.from("v_currently_out").select("*").order("checked_out_at", { ascending: true }),
         supabase
           .from("movement_logs")
-          .select("id, action, timestamp, gate_label, participants(name, unique_code)")
+          .select("id, action, timestamp, gate_label, reason, participants(name, unique_code)")
           .order("timestamp", { ascending: false })
           .limit(20),
       ]);
@@ -113,6 +115,7 @@ export default function AdminDashboard() {
                       <p className="text-xs text-slate-400">
                         {r.unique_code} · left {formatTime(r.checked_out_at)}
                         {r.gate_label ? ` · ${r.gate_label}` : ""}
+                        {r.reason ? ` · ${r.reason}` : ""}
                       </p>
                     </div>
                     <Badge tone={over ? "red" : "amber"}>{formatDuration(durationMs)}</Badge>
@@ -137,6 +140,7 @@ export default function AdminDashboard() {
                     <p className="text-sm font-medium text-white truncate">{log.participants?.name ?? "—"}</p>
                     <p className="text-xs text-slate-400">
                       {log.participants?.unique_code} {log.gate_label ? `· ${log.gate_label}` : ""}
+                      {log.reason ? ` · ${log.reason}` : ""}
                     </p>
                   </div>
                   <div className="text-right">
